@@ -12,11 +12,13 @@ BINS=$(patsubst %.c,%,$(SRC))
 
 all: $(OBJS) $(BINS)
 
-$(BINS): $(OBJS)
+$(BINS): % : %.h $(OBJS)
 	$(CC) $(CFLAGS) -o $@  $@.c $(OBJS) $(LDFLAGS)
 
-$(OBJS): $(patsubst %.o,%.c,$@)
+$(OBJS): %.o : %.h
 	$(CC) $(CFLAGS) -c -fPIC -o $@ $(patsubst %.o,%.c,$@)
 
+
+.PHONY: clean
 clean:
 	rm -f $(OBJS) $(BINS)
