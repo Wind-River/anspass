@@ -1,6 +1,12 @@
 Anspass: Credential storage for utilities that implement the askpass interface
 
 
+License:
+--------
+All code for anspass, anspassd, anspass-ctrl, and anspass-lib is licensed as
+LGPL so that other applications can use it as a library even though the
+application is not just a library.
+
 Description:
 -----------
 
