@@ -10,7 +10,7 @@
 #define ANSPASS_TOKEN           "ANSPASS_TOKEN"
 
 #define MAX_PASSWD_ATTEMPT      3
-#define MAX_MSG_LENGTH          256
+#define MAX_MSG_LENGTH          1024
 #define SOCKET_NAME             "/socket"
 
 #define TOKEN_LEN               16
