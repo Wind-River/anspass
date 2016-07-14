@@ -58,6 +58,13 @@ int main(int argc, char *argv[]) {
 
 
 	env = getenv(ANSPASS_TOKEN);
+
+	if (strlen(env) != TOKEN_LEN)
+	{
+		printf("Error: Token is not the expected length.\n");
+		goto token_len_mismatch;
+	}
+
 	info.token = (char*)calloc(1, sizeof(char)*TOKEN_LEN);
 	if (!info.token)
 		goto no_token_mem;
@@ -105,6 +112,7 @@ not_connected:
 socket_fail:
 	free(info.token);
 no_token_mem:
+token_len_mismatch:
 	free(info.env_path);
 no_env_path:
 	free(msg);
