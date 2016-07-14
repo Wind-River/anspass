@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
 
 
 	ret = -ENOMEM;
-	url = (char*)malloc(sizeof(char)*MAX_MSG_LENGTH);
+	url = (char*)calloc(1, sizeof(char)*MAX_MSG_LENGTH);
 	if (!url)
 		goto no_url_mem;
 
@@ -216,17 +216,17 @@ int send_creds(int type, char *msg) {
 
 	int ret = -ENOMEM;
 	int match = 3;
-	unsigned char *user = (unsigned char*)malloc(sizeof(char) *
+	unsigned char *user = (unsigned char*)calloc(1, sizeof(char) *
 			MAX_MSG_LENGTH);
 	if (!user)
 		goto no_mem_user;
 
-	unsigned char *passwd = (unsigned char*)malloc(sizeof(char) *
+	unsigned char *passwd = (unsigned char*)calloc(1, sizeof(char) *
 			MAX_MSG_LENGTH);
 	if (!passwd)
 		goto no_mem_passwd;
 	
-	unsigned char *v_passwd = (unsigned char*)malloc(sizeof(char) *
+	unsigned char *v_passwd = (unsigned char*)calloc(1, sizeof(char) *
 			MAX_MSG_LENGTH);
 	if (!v_passwd)
 		goto no_mem_v_passwd;
@@ -316,7 +316,7 @@ int handle_update(char *msg) {
 
 int handle_del(char *msg) {
 	int ret = 0;
-	unsigned char *user = (unsigned char*)malloc(sizeof(char) *
+	unsigned char *user = (unsigned char*)calloc(1, sizeof(char) *
 			MAX_MSG_LENGTH);
 	if (!user)
 		goto no_mem_user;
