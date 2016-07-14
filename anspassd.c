@@ -257,8 +257,7 @@ int read_db1_file(const struct db1_meta *db1m) {
 	while(cnt)
 	{
 		cnt--;
-		e = (struct db1_entry*)malloc(sizeof(struct db1_entry));
-		memset(e, 0, sizeof(struct db1_entry));
+		e = (struct db1_entry*)calloc(1, sizeof(struct db1_entry));
 		if (!e)
 			goto oom;
 		if (!fread(e, sizeof(struct db1_entry), 1, fd))
@@ -1201,11 +1200,11 @@ void process_query(struct anspass_packet *in) {
 	int ret = -ENOENT;
 	struct db1_entry *e = NULL;
 	struct anspass_packet *out =
-		(struct anspass_packet*)malloc(sizeof(struct anspass_packet));
+		(struct anspass_packet*)calloc(1, sizeof(struct anspass_packet));
 	if (!out)
 		goto no_out_mem;
 
-	char * answer = (char*)malloc(sizeof(char) * MAX_PASSWD_LEN);
+	char * answer = (char*)calloc(1, sizeof(char) * MAX_PASSWD_LEN);
 	if (!answer)
 		goto no_ans_mem;
 
@@ -1318,7 +1317,7 @@ no_passwd_mem:
 void process_del(struct anspass_packet *in){
 	int ret = 0;
 	struct anspass_packet *out =
-		(struct anspass_packet*)malloc(sizeof(struct anspass_packet));
+		(struct anspass_packet*)calloc(1, sizeof(struct anspass_packet));
 	if (!out)
 		goto no_out_mem;
 	syslog(LOG_PID | LOG_DEBUG, "Deleting %s (%s)\n", in->msg, in->user);
@@ -1417,7 +1416,7 @@ void process_add(struct anspass_packet *in) {
 	int ret = 0;
 
 	struct anspass_packet *out =
-		(struct anspass_packet*)malloc(sizeof(struct anspass_packet));
+		(struct anspass_packet*)calloc(1, sizeof(struct anspass_packet));
 	if (!out)
 		goto no_out_mem;
 	syslog(LOG_PID | LOG_DEBUG , "Adding %s (%s)\n", in->msg, in->user);
@@ -1437,7 +1436,7 @@ no_out_mem:
 void process_update(struct anspass_packet *in) {
 	int ret;
 	struct anspass_packet *out =
-		(struct anspass_packet*)malloc(sizeof(struct anspass_packet));
+		(struct anspass_packet*)calloc(1, sizeof(struct anspass_packet));
 	if (!out)
 		goto no_out_mem;
 
@@ -1465,7 +1464,7 @@ void process_reset(struct anspass_packet *in) {
 
 	int ret = 0;
 	struct anspass_packet *out =
-		(struct anspass_packet*)malloc(sizeof(struct anspass_packet));
+		(struct anspass_packet*)calloc(1, sizeof(struct anspass_packet));
 	if (!out)
 		goto no_out_mem;
 
