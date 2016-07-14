@@ -56,6 +56,12 @@ int main(int argc, char *argv[]) {
 		goto no_env_path;
 	strcpy(info.env_path, env);
 
+	ret = info_check_env_path(&info, 0);
+	if (ret)
+	{
+		printf("Error: Failed to open %s: %d\n", info.env_path, ret);
+		goto env_path_dne;
+	}
 
 	env = getenv(ANSPASS_TOKEN);
 
@@ -113,6 +119,7 @@ socket_fail:
 	free(info.token);
 no_token_mem:
 token_len_mismatch:
+env_path_dne:
 	free(info.env_path);
 no_env_path:
 	free(msg);

@@ -72,6 +72,7 @@ int is_token_set();
 int get_header(struct anspass_packet *packet);
 int check_for_data(struct anspass_packet *packet);
 int get_data(struct anspass_packet *packet);
+int info_check_env_path(struct anspass_info *info, int create);
 int put_data(struct anspass_packet *packet);
 int send_request(struct anspass_info *info, int type, char *msg);
 int setup_socket();

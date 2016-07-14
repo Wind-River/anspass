@@ -1,12 +1,13 @@
 #include "anspass-lib.h"
-#include <errno.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <sys/un.h>
-#include <unistd.h>
-#include <stdio.h>
 
+#include <errno.h>
+#include <stdio.h>
+#include <sys/socket.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <sys/un.h>
 #include <termios.h>
+#include <unistd.h>
 
 int is_env_set() {
 	if (getenv(ANSPASS_ENV) != NULL)
@@ -44,6 +45,24 @@ int put_data(struct anspass_packet *pkt) {
 	int ret = 0;
 	if (send(pkt->socket, pkt, sizeof(struct anspass_packet), 0) == -1)
 		ret = -errno;
+	return ret;
+}
+
+int info_check_env_path(struct anspass_info *info, int create) {
+	int ret = 0;
+	struct stat st = {0};
+
+	if (stat(info->env_path, &st) == -1) {
+		if (create)
+		{
+			if (mkdir(info->env_path, 0700))
+				ret = -errno;
+		}
+		else
+		{
+			ret = -errno;
+		}
+	}
 	return ret;
 }
 

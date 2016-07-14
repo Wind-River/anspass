@@ -25,9 +25,14 @@ int main(int argv, char *argc[]) {
 	info.env_path= (char*)calloc(1, sizeof(char)*strlen(path));
 	if (!info.env_path)
 		goto no_env_path;
-
 	strcpy(info.env_path, path);
 
+	ret = info_check_env_path(&info, 1);
+	if (ret)
+	{
+		printf("Error: Failed to create %s: %d\n", info.env_path, ret);
+		goto env_path_dne;
+	}
 
 	info.token = (char*)calloc(1, sizeof(char)*TOKEN_LEN);
 	if (!info.token)
@@ -96,6 +101,7 @@ db1_fail:
 no_tmp_token:
 	free(info.token);
 no_token:
+env_path_dne:
 	free(info.env_path);
 no_env_path:
 	/* Fall-through expected */
