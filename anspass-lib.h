@@ -45,6 +45,7 @@
 #define UPDATE                  4
 #define RESET                   5
 #define PASSWD_UPDATE           6
+#define SHUTDOWN                7
 #define ACK                     104
 
 struct anspass_packet {

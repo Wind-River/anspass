@@ -166,6 +166,7 @@ void process_add(struct anspass_packet *in);
 void process_del(struct anspass_packet *in);
 void process_reset(struct anspass_packet *in);
 void process_update(struct anspass_packet *in);
+void process_shutdown(struct anspass_packet *in);
 
 
 /* Daemon and signal control */

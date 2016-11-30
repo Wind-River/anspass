@@ -46,11 +46,12 @@ int main(int argc, char *argv[]) {
 		{"delete",  required_argument, 0, 'd'},
 		{"update",  required_argument, 0, 'u'},
 		{"reset",   no_argument,       0, 'r'},
+		{"quit",    no_argument,       0, 'q'},
 		{"help",    no_argument,       0, 'h'},
 		{0, 0, 0, 0}
 	};
 	int option_index = 0;
-	while((c = getopt_long (argc, argv, "a:d:u:rh", long_options,
+	while((c = getopt_long (argc, argv, "a:d:u:rqh", long_options,
 					&option_index)) != -1)
 	{
 		if (optarg && strlen(optarg) > MAX_MSG_LENGTH - 1)
@@ -75,6 +76,9 @@ int main(int argc, char *argv[]) {
 			break;
 		case 'r': /* Reset */
 			cmd = &handle_reset;
+			break;
+		case 'q': /* Reset */
+			cmd = &handle_quit;
 			break;
 		case 'h': /* Help */
 			ret = 0;
@@ -358,6 +362,7 @@ no_pkt:
 no_mem_user:
 	return ret;
 }
+
 int handle_reset(char *msg) {
 	int ret = 0;
 	printf("Resetting database\n");
@@ -370,5 +375,18 @@ int handle_reset(char *msg) {
 	printf("Failed: %d\n", ret);
 success:
 	return ret;
+}
+
+int handle_quit(char *msg) {
+	int ret = 0;
+	printf("Telling server to shutdown\n");
+	send_request(&info, SHUTDOWN, NULL);
+	ret = wait_ack_reply();
+	if (!ret) {
+		printf("Success\n");
+		goto success;
+	}
+	printf("Failed: %d\n", ret);
+success:
 	return ret;
 }

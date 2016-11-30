@@ -34,6 +34,7 @@ int handle_add(char *info);
 int handle_del(char *info);
 int handle_update(char *info);
 int handle_reset(char *info);
+int handle_quit(char *info);
 
 int wait_ack_reply();
 

@@ -1186,6 +1186,9 @@ void process_request(struct anspass_packet *in) {
 	case RESET:
 		process_reset(in);
 		break;
+	case SHUTDOWN:
+		process_shutdown(in);
+		break;
 	case PASSWD_UPDATE:
 		//process_passwd_update(in);
 		break;
@@ -1497,6 +1500,29 @@ done:
 	out->type = ACK;
 	out->ret = 0;
 	syslog(LOG_PID | LOG_DEBUG, "Reset complete.\n");
+
+	ret = put_data(out);
+	if (ret)
+		syslog(LOG_PID | LOG_ERR, "Cannot send packet: %d\n", ret);
+
+	free(out);
+no_out_mem:
+	return;
+}
+
+void process_shutdown(struct anspass_packet *in) {
+	int ret = 0;
+	struct anspass_packet *out =
+		(struct anspass_packet*)calloc(1, sizeof(struct anspass_packet));
+	if (!out)
+		goto no_out_mem;
+
+	info.running = 0;
+
+	out->socket = in->socket;
+	out->type = ACK;
+	out->ret = 0;
+	syslog(LOG_PID | LOG_DEBUG, "Shutdown requested.\n");
 
 	ret = put_data(out);
 	if (ret)
