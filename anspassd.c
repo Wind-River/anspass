@@ -1574,6 +1574,11 @@ void anspass_daemon() {
 		exit(-1);
 	}
 
+	/* Close fds. */
+	close(0);
+	close(1);
+	close(2);
+
 	char *path = getenv(ANSPASS_ENV);
 
 	/* Change the current working directory */
