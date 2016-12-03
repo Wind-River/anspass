@@ -50,8 +50,6 @@ int main(int argv, char *argc[]) {
 		p = (unsigned char*)(token+i);
 		sprintf(info.token+i*2, "%02X", *p);
 	}
-	printf("Token: %s\n", info.token);
-
 
 	/* Read db1 */
 	ret = handle_db1();
@@ -85,6 +83,10 @@ int main(int argv, char *argc[]) {
 	(void) signal(SIGTERM,sig_handler);
 	(void) signal(SIGHUP,sig_handler);
 	info.running = 1;
+
+	/* Print the Token after expected errors... */
+	printf("Token: %s\n", info.token);
+
 	anspass_daemon();
 
 
