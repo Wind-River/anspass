@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
 
 	char *env = getenv(ANSPASS_ENV);
 	ret = -ENOMEM;
-	info.env_path= (char*)calloc(1, sizeof(char)*strlen(env));
+	info.env_path= (char*)calloc(1, sizeof(char)*strlen(env)+1);
 	if (!info.env_path)
 		goto no_env_path;
 	strcpy(info.env_path, env);
@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
 		goto token_len_mismatch;
 	}
 
-	info.token = (char*)calloc(1, sizeof(char)*TOKEN_LEN);
+	info.token = (char*)calloc(1, sizeof(char)*TOKEN_LEN+1);
 	if (!info.token)
 		goto no_token_mem;
 	strncpy(info.token, env, TOKEN_LEN);

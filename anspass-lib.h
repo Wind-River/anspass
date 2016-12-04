@@ -53,10 +53,10 @@ struct anspass_packet {
 	struct timeval *to;
 	int type;
 	int ret;                        /* To return errno code */
-	char msg[MAX_MSG_LENGTH];
-	char user[MAX_MSG_LENGTH];
-	char passwd[MAX_MSG_LENGTH];
-	char token[TOKEN_LEN];
+	char msg[MAX_MSG_LENGTH+1];
+	char user[MAX_MSG_LENGTH+1];
+	char passwd[MAX_MSG_LENGTH+1];
+	char token[TOKEN_LEN+1];
 
 } __attribute__((__packed__));
 

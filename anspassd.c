@@ -22,7 +22,7 @@ int main(int argv, char *argc[]) {
 
 	char *path = getenv(ANSPASS_ENV);
 	ret = -ENOMEM;
-	info.env_path= (char*)calloc(1, sizeof(char)*strlen(path));
+	info.env_path= (char*)calloc(1, sizeof(char)*strlen(path)+1);
 	if (!info.env_path)
 		goto no_env_path;
 	strcpy(info.env_path, path);
@@ -34,11 +34,11 @@ int main(int argv, char *argc[]) {
 		goto env_path_dne;
 	}
 
-	info.token = (char*)calloc(1, sizeof(char)*TOKEN_LEN);
+	info.token = (char*)calloc(1, sizeof(char)*TOKEN_LEN+1);
 	if (!info.token)
 		goto no_token;
 
-	token = (unsigned char*)calloc(1, sizeof(char)*TOKEN_LEN);
+	token = (unsigned char*)calloc(1, sizeof(char)*TOKEN_LEN+1);
 	if (!token)
 		goto no_tmp_token;
 

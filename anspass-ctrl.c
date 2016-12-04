@@ -92,13 +92,13 @@ int main(int argc, char *argv[]) {
 
 	ret = -ENOMEM;
 	env = getenv(ANSPASS_ENV);
-	info.env_path= (char*)calloc(1, sizeof(char)*strlen(env));
+	info.env_path= (char*)calloc(1, sizeof(char)*strlen(env)+1);
 	if (!info.env_path)
 		goto no_env_path;
 	strcpy(info.env_path, env);
 
 	env = getenv(ANSPASS_TOKEN);
-	info.token = (char*)calloc(1, sizeof(char)*TOKEN_LEN);
+	info.token = (char*)calloc(1, sizeof(char)*TOKEN_LEN+1);
 	if (!info.token)
 		goto no_token_mem;
 	strncpy(info.token, env, TOKEN_LEN);
