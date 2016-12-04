@@ -6,6 +6,10 @@
 #include <stdio.h>
 #include <getopt.h>
 
+#ifndef VERSION
+#define VERSION "dev"
+#endif
+
 int main(int argc, char *argv[]) {
 	int ret = -EINVAL;
 	int (*cmd)(char*) = NULL;
@@ -188,6 +192,8 @@ void print_help(int context) {
 	if (context)
 		printf("Invalid option.\n");
 
+	printf("anspass version: %s\n", VERSION);
+	printf("\n");
 	printf("Available options:\n");
 	printf("\n");
 	printf("   --add <url>\n");

@@ -2,6 +2,9 @@ CC ?= gcc
 CFLAGS ?= -Wall -g3 -O2
 LDFLAGS ?= -lgcrypt
 
+VERSION ?= 1.0
+CPPFLAGS ?= -DVERSION=\"$(VERSION)\"
+
 DESTDIR ?=
 bindir ?= /usr/bin
 
