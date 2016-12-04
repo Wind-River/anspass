@@ -1,24 +1,26 @@
-CC=gcc
-CFLAGS=-Wall -g3 -O2
-LDFLAGS=-lgcrypt
+CC ?= gcc
+CFLAGS ?= -Wall -g3 -O2
+LDFLAGS ?= -lgcrypt
 
-CODE=$(wildcard *.c)
+DESTDIR ?=
+bindir ?= /usr/bin
 
-LIBS=$(filter %lib.c, $(CODE))
-OBJS=$(patsubst %.c,%.o,$(LIBS))
+BINS = anspassd anspass anspass-ctrl
+LIBS = anspass-lib.o
 
-SRC=$(filter-out %lib.c,$(CODE))
-BINS=$(patsubst %.c,%,$(SRC))
+all: $(LIBS) $(BINS)
 
-all: $(OBJS) $(BINS)
+$(BINS): $(LIBS)
 
-$(BINS): % : %.h $(OBJS)
-	$(CC) $(CFLAGS) -o $@  $@.c $(OBJS) $(LDFLAGS)
+# Make sure if a header changes, the .c is rebuilt
+%.c: %.h
+	-@touch $@
 
-$(OBJS): %.o : %.h
-	$(CC) $(CFLAGS) -c -fPIC -o $@ $(patsubst %.o,%.c,$@)
+install: all
+	-@if [ ! -d $(DESTDIR)$(bindir) ]; then mkdir -p $(DESTDIR)$(bindir); fi
+	cp $(BINS) $(DESTDIR)$(bindir)
 
 
 .PHONY: clean
 clean:
-	rm -f $(OBJS) $(BINS)
+	rm -f $(OBJS) $(BINS) $(LIBS)
