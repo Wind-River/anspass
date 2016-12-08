@@ -1,6 +1,7 @@
 #include "anspassd.h"
 #include "anspass-lib.h"
 #include <errno.h>
+#include <string.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -32,6 +33,16 @@ int main(int argv, char *argc[]) {
 	{
 		printf("Error: Failed to create %s: %d\n", info.env_path, ret);
 		goto env_path_dne;
+	}
+
+	info.old_path = getcwd(NULL, 0);
+	if (!info.old_path)
+		goto no_old_path;
+
+        if (chdir((const char *)info.env_path) < 0)
+	{
+		printf("Change dir %s failed: %s\n", info.env_path, strerror(errno));
+		goto chdir_fail;
 	}
 
 	info.token = (char*)calloc(1, sizeof(char)*TOKEN_LEN+1);
@@ -103,6 +114,10 @@ db1_fail:
 no_tmp_token:
 	free(info.token);
 no_token:
+	chdir((const char *)info.old_path);
+chdir_fail:
+	free(info.old_path);
+no_old_path:
 env_path_dne:
 	free(info.env_path);
 no_env_path:

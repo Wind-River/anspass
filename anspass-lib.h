@@ -35,7 +35,7 @@
 
 #define MAX_PASSWD_ATTEMPT      3
 #define MAX_MSG_LENGTH          1024
-#define SOCKET_NAME             "/socket"
+#define SOCKET_NAME             "./socket"
 
 #define TOKEN_LEN               16
 
@@ -66,6 +66,7 @@ struct anspass_info {
 	int socket;
 	int running;
 	char *env_path;
+	char *old_path;
 };
 
 int is_env_set();

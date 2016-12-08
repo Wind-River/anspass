@@ -1,4 +1,5 @@
 #include "anspass.h"
+#include <errno.h>
 #include <string.h>
 #include <sys/socket.h>
 #include <sys/un.h>
@@ -63,6 +64,16 @@ int main(int argc, char *argv[]) {
 		goto env_path_dne;
 	}
 
+	info.old_path = getcwd(NULL, 0);
+	if (!info.old_path)
+		goto no_old_path;
+
+	if (chdir((const char *)info.env_path) < 0)
+	{
+		printf("Change dir %s failed: %s\n", info.env_path, strerror(errno));
+		goto chdir_fail;
+	}
+
 	env = getenv(ANSPASS_TOKEN);
 
 	if (strlen(env) != TOKEN_LEN)
@@ -120,6 +131,10 @@ socket_fail:
 no_token_mem:
 token_len_mismatch:
 env_path_dne:
+	chdir((const char *)info.old_path);
+chdir_fail:
+	free(info.old_path);
+no_old_path:
 	free(info.env_path);
 no_env_path:
 	free(msg);
