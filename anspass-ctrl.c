@@ -141,7 +141,8 @@ not_connected:
 socket_fail:
 	free(info.token);
 no_token_mem:
-	chdir((const char *)info.old_path);
+	if(chdir((const char *)info.old_path))
+		perror("chdir");
 chdir_fail:
 	free(info.old_path);
 no_old_path:

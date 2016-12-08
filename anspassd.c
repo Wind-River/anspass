@@ -114,7 +114,8 @@ db1_fail:
 no_tmp_token:
 	free(info.token);
 no_token:
-	chdir((const char *)info.old_path);
+	if (chdir((const char *)info.old_path))
+		perror("chdir");
 chdir_fail:
 	free(info.old_path);
 no_old_path:
@@ -851,14 +852,16 @@ int create_db2_entry(struct db1_entry *e, const char *secret) {
 	gcry_cipher_hd_t gcry_c;
 	uint len = strlen(secret) * sizeof(char);
 	uint len_pad = sizeof(dec_rand);
+	unsigned char *padded = NULL;
 
 	struct db2_entry *new = (struct db2_entry*)calloc(1,
 			sizeof(struct db2_entry));
 	if (!new)
 		goto no_mem_new;
 
-
-	unsigned char *padded = (unsigned char *)calloc(1, len+len_pad);
+	padded = (unsigned char *)calloc(1, len+len_pad);
+	if (!padded)
+		goto no_mem_new;
 
 	/* Copy the string */
 	memcpy(padded, secret, len);
@@ -902,6 +905,7 @@ gcry_setk_fail:
 	gcry_cipher_close(gcry_c);
 gcry_open_fail:
 	/* Fall-through expected */
+	free(padded);
 no_mem_new:
 	return ret;
 }
@@ -1153,7 +1157,7 @@ int is_request_valid(struct anspass_packet *packet) {
 
 static inline int get_passwd_len(char *msg, char *user) {
 	return sizeof(char) * (strlen(msg) + strlen(user) +
-			strlen(PASSWORD_STR) + 6);
+			strlen(PASSWORD_STR) + 12);
 }
 
 static inline void get_passwd_str(char *passwd, struct anspass_packet *in) {
@@ -1179,6 +1183,7 @@ static inline void get_passwd_str(char *passwd, struct anspass_packet *in) {
 		token = strtok(NULL, d);
 	}
 	strcat(passwd, "': ");
+	free(msg);
 oom:
 	return;
 }
