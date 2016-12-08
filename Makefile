@@ -1,6 +1,6 @@
 CC ?= gcc
 CFLAGS ?= -Wall -g3 -O2
-LDFLAGS ?= -lgcrypt
+EXTRA_LIBS ?= -lgcrypt
 
 VERSION ?= 1.0
 CPPFLAGS ?= -DVERSION=\"$(VERSION)\"
@@ -14,6 +14,7 @@ LIBS = anspass-lib.o
 all: $(LIBS) $(BINS)
 
 $(BINS): $(LIBS)
+	$(CC) $(CFLAGS) $(LDFLAGS) $@.c -o $@ $< $(EXTRA_LIBS)
 
 # Make sure if a header changes, the .c is rebuilt
 %.c: %.h
