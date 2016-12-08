@@ -1,4 +1,5 @@
 #include "anspass-ctrl.h"
+#include <errno.h>
 #include <string.h>
 #include <sys/socket.h>
 #include <sys/un.h>
@@ -101,6 +102,16 @@ int main(int argc, char *argv[]) {
 		goto no_env_path;
 	strcpy(info.env_path, env);
 
+	info.old_path = getcwd(NULL, 0);
+	if (!info.old_path)
+		goto no_old_path;
+
+	if (chdir((const char *)info.env_path) < 0)
+	{
+		printf("Change dir %s failed: %s\n", info.env_path, strerror(errno));
+		goto chdir_fail;
+	}
+
 	env = getenv(ANSPASS_TOKEN);
 	info.token = (char*)calloc(1, sizeof(char)*TOKEN_LEN+1);
 	if (!info.token)
@@ -130,6 +141,10 @@ not_connected:
 socket_fail:
 	free(info.token);
 no_token_mem:
+	chdir((const char *)info.old_path);
+chdir_fail:
+	free(info.old_path);
+no_old_path:
 	free(info.env_path);
 no_env_path:
 too_long:

@@ -88,7 +88,6 @@ int setup_socket(struct anspass_info *info) {
 		goto file_exists;
 
 	info->s_name->sun_family = AF_UNIX;
-	strcat(info->s_name->sun_path, info->env_path);
 	strcat(info->s_name->sun_path, SOCKET_NAME);
 
 
