@@ -131,7 +131,8 @@ socket_fail:
 no_token_mem:
 token_len_mismatch:
 env_path_dne:
-	chdir((const char *)info.old_path);
+	if(chdir((const char *)info.old_path))
+		perror("chdir");
 chdir_fail:
 	free(info.old_path);
 no_old_path:
