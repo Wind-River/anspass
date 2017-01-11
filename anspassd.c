@@ -6,6 +6,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/un.h>
+#include <sys/stat.h>
 
 
 
@@ -14,6 +15,7 @@ int main(int argv, char *argc[]) {
 	int i = 0;
 	unsigned char *p;
 	unsigned char *token;
+	umask(0077);
 	if (!is_env_set())
 	{
 		printf("Error: Please specify the path for anspass in %s\n",
