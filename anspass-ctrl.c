@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <getopt.h>
+#include <sys/stat.h>
 
 #ifndef VERSION
 #define VERSION "dev"
@@ -17,6 +18,7 @@ int main(int argc, char *argv[]) {
 	char *url, *env;
 	int c;
 
+	umask(0077);
 	int inval = 0;
 	if (!is_env_set())
 	{

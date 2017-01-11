@@ -4,6 +4,7 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <unistd.h>
+#include <sys/stat.h>
 
 int main(int argc, char *argv[]) {
 	int ret = -EINVAL;
@@ -11,6 +12,7 @@ int main(int argc, char *argv[]) {
 	int size = 0;
 	char *msg;
 
+	umask(0077);
 	if (argc == 1)
 		goto no_entry;
 
