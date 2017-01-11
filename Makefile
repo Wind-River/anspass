@@ -13,6 +13,10 @@ LIBS = anspass-lib.o
 
 all: $(LIBS) $(BINS)
 
+anspassd: anspassd.c
+anspass: anspass.c
+anspass-ctrl: anspass-ctrl.c
+
 $(BINS): $(LIBS)
 	$(CC) $(CFLAGS) $(LDFLAGS) $@.c -o $@ $< $(EXTRA_LIBS)
 
